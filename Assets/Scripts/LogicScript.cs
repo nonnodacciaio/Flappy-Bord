@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -32,7 +33,10 @@ public class LogicScript : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (!IsPointerOverUI())
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     public void SetHighScore()
@@ -44,4 +48,10 @@ public class LogicScript : MonoBehaviour
 
         HighScoreText.text = $"High Score: {PlayerPrefs.GetInt("highScore")}";
     }
+
+    private bool IsPointerOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
 }

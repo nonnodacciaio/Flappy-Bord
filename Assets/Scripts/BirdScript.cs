@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BirdScript : MonoBehaviour
 {
@@ -15,15 +16,25 @@ public class BirdScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && BirdIsAlive)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && BirdIsAlive)
         {
-            RigidBody.velocity = Vector2.up * FlapStrength;
+            Jump();
+        }
+
+        if (Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        {
+            Jump();
         }
 
         if ((gameObject.transform.position.y > 17 || gameObject.transform.position.y < -13) && BirdIsAlive)
         {
             KillBird();
         }
+    }
+
+    public void Jump()
+    {
+        RigidBody.velocity = Vector2.up * FlapStrength;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
